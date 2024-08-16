@@ -24,6 +24,21 @@ class User::LoansController < ApplicationController
     end
   end
 
+  def repay
+    @loan = Loan.find(params[:id])
+    total_repay_amount = @loan.amount + calculate_total_interest(@loan)
+    if current_user.wallet_balance >= total_repay_amount
+      current_user.update(wallet_balance: current_user.wallet_balance - total_repay_amount)
+      @loan.admin.update(wallet_balance: @loan.admin.wallet_balance + total_repay_amount)
+      @loan.update(status: 'closed')
+    else
+      partial_payment = current_user.wallet_balance
+      current_user.update(wallet_balance: 0)
+      @loan.admin.update(wallet_balance: @loan.admin.wallet_balance + partial_payment)
+      @loan.update(status: 'closed')
+    end
+  end
+
   private
   
   def accept_adjustment
@@ -42,6 +57,10 @@ class User::LoansController < ApplicationController
   def update_wallets
     @loan.user.update(wallet_balance: @loan.user.wallet_balance + @loan.amount)
     @loan.admin.update(wallet_balance: @loan.admin.wallet_balance - @loan.amount)
+  end
+
+  def calculate_total_interest(loan)
+    # Logic to calculate total interest accrued on the loan
   end
 
   def loan_params
