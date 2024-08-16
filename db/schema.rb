@@ -10,13 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_16_112952) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_16_114140) do
   create_table "admins", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.decimal "wallet_balance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "loans", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "admin_id", null: false
+    t.decimal "amount"
+    t.decimal "interest_rate"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_loans_on_admin_id"
+    t.index ["user_id"], name: "index_loans_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -27,4 +39,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_16_112952) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "loans", "admins"
+  add_foreign_key "loans", "users"
 end
