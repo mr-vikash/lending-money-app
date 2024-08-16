@@ -7,4 +7,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  namespace :admin do
+    resources :loans, only: [:index, :show, :update]
+  end
+  
+  namespace :user do
+    resources :loans, only: [:new, :create, :show, :index]
+  end
 end
