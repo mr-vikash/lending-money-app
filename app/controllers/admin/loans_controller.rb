@@ -24,10 +24,13 @@ class Admin::LoansController < ApplicationController
   private
 
   def approve_loan
+    flash[:notice] = "Loan approved successfully"
     @loan.update(status: 'approved')
+    redirect_to user_loan_path(@loan)
   end
 
   def reject_loan
+    flash[:notice] = "Loan approved successfully"
     @loan.update(status: 'rejected')
   end
 

@@ -1,5 +1,5 @@
 <%= form_with model: @loan, url: admin_loan_path(@loan), local: true do |f| %>
-  <% if @loan.status == 'requested' || @loan.status == 'waiting_for_adjustment_acceptance' %>
+  <% if @loan.status == 'requested' || @loan.status == 'waiting_for_adjustment_acceptance' || @loan.status == 'readjustment_requested' %>
     <div>
       <%= f.label :amount, 'Loan Amount' %>
       <%= f.text_field :amount %>

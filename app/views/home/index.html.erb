@@ -1,6 +1,19 @@
+<h2>Lending Money System</h2>
 <% if user_signed_in? %> 
- <div> Welcome <%= current_user.email %> </div> 
-  <%= button_to "Sign out", destroy_user_session_path, method: :delete %> 
+ <div> Welcome <%= current_user.email %> </div>
+  <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
+<% elsif admin_signed_in? %>
+  <div> Welcome <%= current_admin.email %> </div>
+  <%= button_to "Sign out", destroy_admin_session_path, method: :delete %>
 <% else %>
-  <%= button_to "Sign in", new_user_session_path %> 
-<% end %>
+  <%= button_to "User Sign in", new_user_session_path %>
+  <%= button_to "Admin Sign in", new_admin_session_path %>
+<%end%>
+<% if current_user %>
+  <%= link_to "Request New Loan", new_user_loan_path%> | 
+  <%= link_to "Your All Loans Details", user_loans_path%>
+<%end%>
+<% if current_admin %>
+  <%= link_to "Users Loans Details", admin_loans_path%>
+<%end%>
+

@@ -73,3 +73,9 @@ gem 'sidekiq'
 gem 'devise'
 
 gem 'sassc-rails'
+
+gem "sidekiq-scheduler"
+
+gem "redis"
+
+gem 'sidekiq-cron', '~> 1.2'
