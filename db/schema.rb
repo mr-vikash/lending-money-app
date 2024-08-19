@@ -10,13 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_16_115233) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_19_042123) do
   create_table "admins", force: :cascade do |t|
     t.string "name"
     t.string "email"
-    t.decimal "wallet_balance"
+    t.decimal "wallet_balance", precision: 7, scale: 4, default: "1000000.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["email"], name: "index_admins_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
   create_table "loan_adjustments", force: :cascade do |t|
@@ -43,9 +49,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_16_115233) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
-    t.decimal "wallet_balance"
+    t.decimal "wallet_balance", precision: 6, scale: 4, default: "10000.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "loan_adjustments", "loans"

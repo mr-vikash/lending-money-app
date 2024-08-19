@@ -1,0 +1,20 @@
+<h1>User Wallet:<%= current_user.wallet_balance %></h1>
+<h2>Your Loans</h2>
+<table>
+  <tr>
+    <th>Amount</th>
+    <th>Interest Rate</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  <% @loans.each do |loan| %>
+    <tr>
+      <td><%= loan.amount %></td>
+      <td><%= loan.interest_rate %></td>
+      <td><%= loan.status %></td>
+      <td>
+        <%= link_to 'View', user_loan_path(loan) %>
+      </td>
+    </tr>
+  <% end %>
+</table>

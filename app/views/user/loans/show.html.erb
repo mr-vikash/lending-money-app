@@ -1,0 +1,12 @@
+<h1>User Wallet:<%= current_user.wallet_balance %></h1>
+<h2>Loan Details</h2>
+<p>Loan Amount: <%= @loan.amount %></p>
+<p>Wallet Balance: <%= @loan.user.wallet_balance %></p>
+<p>Interest Rate: <%= @loan.interest_rate %></p>
+<p>Status: <%= @loan.status %></p>
+
+<% if @loan.status == 'approved' || @loan.status == 'waiting_for_adjustment_acceptance' %>
+  <%= render 'form', loan: @loan %>
+<% elsif @loan.status == 'open' %>
+  <%= button_to 'Repay Loan', repay_user_loan_path(@loan), method: :post, form: { class: 'd-inline' }, class: 'btn btn-primary' %>
+<% end %>

@@ -1,0 +1,22 @@
+<h1>Admin Wallet Balance: <%= current_admin.wallet_balance %></h1>
+<h2>Loan Requests</h2>
+<table>
+  <tr>
+    <th>User</th>
+    <th>Amount</th>
+    <th>Interest Rate</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  <% @loans.each do |loan| %>
+    <tr>
+      <td><%= loan.user.email %></td>
+      <td><%= loan.amount %></td>
+      <td><%= loan.interest_rate %></td>
+      <td><%= loan.status %></td>
+      <td>
+        <%= link_to 'View', admin_loan_path(loan) %>
+      </td>
+    </tr>
+  <% end %>
+</table>

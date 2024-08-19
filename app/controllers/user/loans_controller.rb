@@ -1,4 +1,6 @@
 class User::LoansController < ApplicationController
+  before_action :authenticate_user!
+
   def new
     @loan = Loan.new
   end
@@ -12,6 +14,14 @@ class User::LoansController < ApplicationController
     end
   end
 
+  def show
+    @loan = Loan.find(params[:id])
+  end
+
+  def index
+    @loans = Loan.all
+  end
+
   def update
     @loan = Loan.find(params[:id])
     case params[:commit]
@@ -19,8 +29,12 @@ class User::LoansController < ApplicationController
       accept_adjustment
     when 'Reject'
       reject_loan
+    when 'Confirm'
+      confirm_loan
     when 'Request Readjustment'
       request_readjustment
+    when 'Request adjustment'
+      request_adjustment
     end
   end
 
@@ -40,6 +54,25 @@ class User::LoansController < ApplicationController
   end
 
   private
+
+  def confirm_loan
+    @loan = Loan.find(params[:id])
+    if @loan.status == 'approved'
+      if @loan.update(status: 'open')
+        current_user.wallet_balance += @loan.amount
+        @loan.admin.wallet_balance -= @loan.amount
+        if current_user.save && @loan.admin.save
+          redirect_to user_loan_path(@loan), notice: 'Loan confirmed and funds transferred to your wallet.'
+        else
+          redirect_to user_loan_path(@loan), alert: 'Unable to confirm the loan due to wallet update error.'
+        end
+      else
+        redirect_to user_loan_path(@loan), alert: 'Unable to confirm the loan.'
+      end
+    else
+      redirect_to user_loan_path(@loan), alert: 'Loan must be in approved status to confirm.'
+    end
+  end
   
   def accept_adjustment
     @loan.update(status: 'open')
@@ -47,7 +80,19 @@ class User::LoansController < ApplicationController
   end
 
   def reject_loan
-    @loan.update(status: 'rejected')
+    if @loan.update(status: 'rejected')
+      redirect_to user_loans_path, notice: 'Loan rejected successfully.'
+    else
+      redirect_to user_loan_path(@loan), alert: 'Unable to reject the loan.'
+    end
+  end
+
+  def request_adjustment
+    if @loan.update(status: 'readjustment_requested')
+      redirect_to user_loan_path(@loan), notice: 'Loan adjustment request sent to the admin.'
+    else
+      redirect_to user_loan_path(@loan), alert: 'Unable to request a loan adjustment.'
+    end
   end
 
   def request_readjustment
@@ -60,7 +105,7 @@ class User::LoansController < ApplicationController
   end
 
   def calculate_total_interest(loan)
-    # Logic to calculate total interest accrued on the loan
+    interest = (loan.amount * loan.interest_rate / 100) / (365 * 24 * 12)
   end
 
   def loan_params

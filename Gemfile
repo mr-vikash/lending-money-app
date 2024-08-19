@@ -69,3 +69,7 @@ end
 gem 'cssbundling-rails'
 
 gem 'sidekiq'
+
+gem 'devise'
+
+gem 'sassc-rails'

@@ -1,0 +1,18 @@
+<%= form_with model: @loan, url: admin_loan_path(@loan), local: true do |f| %>
+  <% if @loan.status == 'requested' || @loan.status == 'waiting_for_adjustment_acceptance' %>
+    <div>
+      <%= f.label :amount, 'Loan Amount' %>
+      <%= f.text_field :amount %>
+    </div>
+    <div>
+      <%= f.label :interest_rate, 'Interest Rate' %>
+      <%= f.text_field :interest_rate %>
+    </div>
+
+    <div>
+      <%= f.submit 'Approve' %>
+      <%= f.submit 'Reject' %>
+      <%= f.submit 'Adjust' %>
+    </div>
+  <% end %>
+<% end %>

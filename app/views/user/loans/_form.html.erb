@@ -1,0 +1,14 @@
+<%= form_with model: @loan, url: user_loan_path(@loan), local: true do |f| %>
+  <% if @loan.status == 'approved' %>
+    <div>
+      <%= f.submit 'Confirm' %>
+      <%= f.submit 'Reject' %>
+    </div>
+  <% elsif @loan.status == 'waiting_for_adjustment_acceptance' %>
+    <div>
+      <%= f.submit 'Accept' %>
+      <%= f.submit 'Reject' %>
+      <%= f.submit 'Request Readjustment' %>
+    </div>
+  <% end %>
+<% end %>
