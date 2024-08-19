@@ -16,8 +16,4 @@ Rails.application.routes.draw do
     resources :loans, only: [:index, :show, :update]
   end
 
-  authenticate :user, ->(user) { user.admin? } do
-    mount Sidekiq::Web => '/sidekiq'
-  end
-
 end
