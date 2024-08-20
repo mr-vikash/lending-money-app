@@ -4,7 +4,6 @@ class Loan < ApplicationRecord
   has_many :loan_adjustments
   validates :amount, :interest_rate, numericality: { greater_than: 0 }
   validates :status, inclusion: { in: %w[requested approved open closed rejected waiting_for_adjustment_acceptance readjustment_requested] }
-  before_update :check_loan_repayment,   if: :saved_change_to_amount?
 
   def adjustment_history
     loan_adjustments.map do |adj|
