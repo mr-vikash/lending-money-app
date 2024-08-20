@@ -1,9 +1,17 @@
 :concurrency: 5
+:concurrency: 5
 :queues:
   - default
 
-:schedule:
-  calculate_interest_in_every_five_minutes:
-    cron: "*/5 * * * *"
-    class: "CalculateInterestJob"
-    queue: default
+:scheduler:
+  :schedule:
+    calculate_interest_job:
+      cron: "*/5 * * * *"
+      class: "CalculateInterestJob"
+      queue: default
+
+:timeout: 8
+:verbose: false
+:pidfile: ./sidekiq.pid
+:logfile: ./log/sidekiq.log
+:environment: development

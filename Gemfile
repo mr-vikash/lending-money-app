@@ -68,12 +68,13 @@ end
 
 gem 'cssbundling-rails'
 
-gem 'sidekiq'
-
 gem 'devise'
+
+gem 'sidekiq-cron', '~> 1.2'
 
 gem 'sassc-rails'
 
+gem 'sidekiq'
+
 gem "sidekiq-scheduler"
 
-gem 'sidekiq-cron', '~> 1.2'

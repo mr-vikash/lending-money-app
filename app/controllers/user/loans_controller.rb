@@ -40,27 +40,14 @@ class User::LoansController < ApplicationController
     end
   end
 
-  
-
   private
 
   def repay
     @loan = Loan.find(params[:id])
-    total_repay_amount = @loan.amount
-    if current_user.wallet_balance >= total_repay_amount
-      current_user.update(wallet_balance: current_user.wallet_balance - total_repay_amount)
-      @loan.admin.update(wallet_balance: @loan.admin.wallet_balance + total_repay_amount)
-      @loan.update(status: 'closed')
-      flash[:notice] = "Money tranferred to admin account"
-      redirect_to user_loan_path(@loan)
-    else
-      partial_payment = current_user.wallet_balance
-      current_user.update(wallet_balance: 0)
-      @loan.admin.update(wallet_balance: @loan.admin.wallet_balance + partial_payment)
-      @loan.update(status: 'closed')
-      flash[:notice] = "Money tranferred to admin account"
-      redirect_to user_loan_path(@loan)
-    end
+    @loan.repay_loan
+    @loan.update(status: 'closed')
+    flash[:notice] = "Money tranferred to admin account"
+    redirect_to user_loan_path(@loan)
   end
 
   def confirm_loan
