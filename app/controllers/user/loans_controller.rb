@@ -6,7 +6,7 @@ class User::LoansController < ApplicationController
   end
 
   def create
-    @loan = current_user.loans.build(loan_params.merge(admin: Admin.first, status: 'requested'))
+    @loan = current_user.loans.new(loan_params.merge(admin: Admin.first, status: 'requested'))
     if @loan.save
       redirect_to user_loans_path, notice: 'Loan requested successfully.'
     else
@@ -85,6 +85,7 @@ class User::LoansController < ApplicationController
   def accept_adjustment
     @loan.update(status: 'open')
     update_wallets
+    redirect_to user_loan_path(@loan), notice: 'Adjustment Accepted and money transferred to user account'
   end
 
   def reject_loan
@@ -105,6 +106,7 @@ class User::LoansController < ApplicationController
 
   def request_readjustment
     @loan.update(status: 'readjustment_requested')
+    redirect_to user_loan_path(@loan), notice: 'Readjustment requested successfully'
   end
 
   def update_wallets

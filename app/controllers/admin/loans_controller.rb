@@ -26,17 +26,20 @@ class Admin::LoansController < ApplicationController
   def approve_loan
     flash[:notice] = "Loan approved successfully"
     @loan.update(status: 'approved')
-    redirect_to user_loan_path(@loan)
+    redirect_to admin_loan_path(@loan)
   end
 
   def reject_loan
-    flash[:notice] = "Loan approved successfully"
+    flash[:notice] = "Loan Reject successfully"
     @loan.update(status: 'rejected')
+    redirect_to admin_loan_path(@loan)
   end
 
   def adjust_loan
     @loan.update(status: 'waiting_for_adjustment_acceptance', amount: params[:loan][:amount], interest_rate: params[:loan][:interest_rate])
     LoanAdjustment.create(loan: @loan, adjusted_amount: params[:loan][:amount], adjusted_interest_rate: params[:loan][:interest_rate])
+    flash[:notice] = "Loan Adjusted successfully"
+    redirect_to admin_loan_path(@loan)
   end
 
 end

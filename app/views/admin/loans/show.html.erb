@@ -6,4 +6,7 @@
 <p>Status: <%= @loan.status %></p>
 
 <%= render 'form', loan: @loan %>
-<%= link_to "Go to User", user_loan_path(@loan)%>
+<%= link_to "Go to User", user_loan_path(@loan)%> |
+<% if current_admin %>
+  <%= button_to "Sign out", destroy_admin_session_path, method: :delete %>
+<%end%>

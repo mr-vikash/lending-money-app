@@ -4,7 +4,6 @@
 <p>Wallet Balance: <%= @loan.user.wallet_balance %></p>
 <p>Interest Rate: <%= @loan.interest_rate %></p>
 <p>Status: <%= @loan.status %></p>
-<%= link_to "Your all loans", user_loans_path %>
 <% if @loan.status == 'approved' || @loan.status == 'waiting_for_adjustment_acceptance' %>
   <%= render 'form', loan: @loan %>
 <% elsif @loan.status == 'open' %>
@@ -12,4 +11,9 @@
           <%= f.submit 'Repay Loan' %>
   <%end%>
 <% end %>
-<%= link_to "Go to Admin", admin_loan_path(@loan) if current_admin %>
+| <%= link_to "Go to Admin", admin_loan_path(@loan) if current_admin %> |
+<%= link_to "Your all loans", user_loans_path %> |
+<%= link_to "Rquest New Loan", new_user_loan_path %> |
+<% if current_user %>
+  <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
+<%end%>
